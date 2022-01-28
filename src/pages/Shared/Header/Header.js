@@ -1,0 +1,50 @@
+import React from 'react';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { HashLink } from 'react-router-hash-link';
+import Logo from './logo.svg';
+import './Header.css';
+import useAuth from '../../../hooks/useAuth';
+
+const Header = () => {
+    const {user, logOut} = useAuth();
+
+    return (
+        <div style={{ position:"sticky", width:"100%", top:"0", zIndex:"2", background: "rgba(0, 0, 0, 0.9)" }}>
+        <nav>
+            <Navbar collapseOnSelect expand="lg" variant="dark">
+                <Container fluid className="px-5 py-3">
+                <Navbar.Brand href="#home" className='text-bold'>HealthCare</Navbar.Brand>
+
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="ms-lg-auto me-lg-5 my-lg-0 my-sm-2 text-center">
+                            <Nav.Link as={HashLink} exact to="/#" className="me-lg-3">Home</Nav.Link>
+                            <Nav.Link as={HashLink} to="/#services" className="me-lg-3">Services</Nav.Link>
+                            <Nav.Link as={HashLink} to="/#commitment" className="me-lg-3">Greet</Nav.Link>
+                            <Nav.Link as={HashLink} to="/#faq" className="me-lg-3">FAQ</Nav.Link>
+
+                            <Nav.Link as={HashLink} to="/about" className="me-lg-3">About</Nav.Link>
+                            <Nav.Link as={HashLink} to="/contact" className="me-lg-3">Contact</Nav.Link> 
+                            {
+                                user?.email ?
+                                <div className="d-flex align-items-center">
+                                <span className="brand me-2">{user?.email}</span>
+                                <button className="hov-logout" style={{backgroundColor: 'transparent', border: 'none'}} onClick={logOut}>Logout</button>
+                                </div> :
+                                <div className="d-flex justify-content-center">
+                                <Nav.Link as={HashLink} to="/login" className="me-3">Login</Nav.Link>
+                                <Nav.Link as={HashLink} to="/register" className="me-lg-3">Register</Nav.Link>
+                                </div>
+                            }
+
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </nav>
+    </div>
+    )
+}
+
+export default Header;
